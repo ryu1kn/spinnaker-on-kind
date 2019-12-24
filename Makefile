@@ -5,16 +5,22 @@ spinnaker_helm_ver := 1.22.4
 spinnaker_ver_dir := __spinnaker-versions
 spinnaker_ver := 1.16.1
 spinnaker_settings_dir := __bom
+script_dir := ./scripts
 
 recreate_dir = rm -rf "$1" && mkdir "$1"
-update_file = $1 < $2 > __tmp_file && mv -f __tmp_file $2 && rm -f __tmp_file
+update_with = $1 < $2 > __tmp_file && mv -f __tmp_file $2 && rm -f __tmp_file
+untar = tar zxvf $1 -C $(dir $1) && rm -f $1
+
+$(spinnaker_ver_dir)/%:
+	$(script_dir)/download-spinnaker-settings.sh $*
 
 spinnaker-$(spinnaker_helm_ver).tgz:
 	helm pull stable/spinnaker --version $(spinnaker_helm_ver)
 
 $(spinnaker_settings_dir): $(spinnaker_ver_dir)/$(spinnaker_ver)
 	cp -r $< $@
-	$(call update_file,./localise-bom.sh,$@/bom/$(spinnaker_ver).yml)
+	$(call update_with,$(script_dir)/localise-bom.sh,$@/bom/$(spinnaker_ver).yml)
+	$(call untar,$@/rosco/packer.tar.gz)
 
 bom.tgz: $(spinnaker_settings_dir)
 	tar zcvf $@ -C $< .
@@ -28,7 +34,7 @@ $(manifest): helm-values.yaml bom.tgz spinnaker-$(spinnaker_helm_ver).tgz
 
 .PHONY: start-cluster
 start-cluster:
-	test -z "$(docker ps --filter name=kind-control-plane -q)" && ./kind-with-registry.sh
+	test -z "$(docker ps --filter name=kind-control-plane -q)" && $(script_dir)/kind-with-registry.sh
 	kind export kubeconfig
 
 .PHONY: %-manifest
@@ -37,7 +43,7 @@ start-cluster:
 
 .PHONY: cache-images
 cache-images: $(cache_image_file)
-	./cache-images.sh $<
+	$(script_dir)/cache-images.sh $<
 
 halyard-deploy-original.jar: $(cache_image_file)
 	hal_image=$$(fgrep /halyard: $< | sed 's|.*/||') \
@@ -54,7 +60,7 @@ halyard-deploy-patched.jar: halyard-deploy-original.jar
 Dockerfile-halyard-patch: $(cache_image_file) halyard-deploy-patched.jar
 	hal_image=$$(fgrep /halyard: $< | sed 's|.*/||') \
 	&& jar_path=$$(docker run --rm localhost:5000/$$hal_image bash -c 'ls /opt/halyard/lib/halyard-deploy-*.jar') \
-		&& ./create-dockerfile-halyard.sh "$$hal_image" "$(word 2,$^)" "$$jar_path" > $@
+		&& $(script_dir)/create-dockerfile-halyard.sh "$$hal_image" "$(word 2,$^)" "$$jar_path" > $@
 
 .PHONY: patch-halyard
 patch-halyard: $(cache_image_file) Dockerfile-halyard-patch

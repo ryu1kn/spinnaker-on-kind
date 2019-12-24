@@ -14,4 +14,3 @@ while read -r image; do
     docker tag "$image" "$local_image"
     docker push "$local_image"
 done < "$image_list_file"
-
