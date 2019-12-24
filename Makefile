@@ -7,15 +7,14 @@ spinnaker_ver := 1.16.1
 spinnaker_settings_dir := __bom
 
 recreate_dir = rm -rf "$1" && mkdir "$1"
+update_file = $1 < $2 > __tmp_file && mv -f __tmp_file $2 && rm -f __tmp_file
 
 spinnaker-$(spinnaker_helm_ver).tgz:
 	helm pull stable/spinnaker --version $(spinnaker_helm_ver)
 
 $(spinnaker_settings_dir): $(spinnaker_ver_dir)/$(spinnaker_ver)
 	cp -r $< $@
-	./localise-bom.sh $@/bom/$(spinnaker_ver).yml > tmp.yml
-	mv tmp.yml $@/bom/$(spinnaker_ver).yml
-	rm -f tmp.yml
+	$(call update_file,./localise-bom.sh,$@/bom/$(spinnaker_ver).yml)
 
 bom.tgz: $(spinnaker_settings_dir)
 	tar zcvf $@ -C $< .

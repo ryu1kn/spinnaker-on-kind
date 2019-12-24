@@ -1,12 +1,10 @@
 #!/bin/bash
 
-readonly bom=$1
+set -euo pipefail
 
 yaml_wrap() {
-    local input="$1"
-    shift
-    yq read "$input" -j | jq "$@" | yq read -
+    yq read - -j | "$@" | yq read -
 }
 
-yaml_wrap "$bom" '.services |= map_values(if .version then .version |= "local:\(.)" else . end)
+yaml_wrap jq '.services |= map_values(if .version then .version |= "local:\(.)" else . end)
     | .artifactSources.dockerRegistry |= "registry:5000"'
