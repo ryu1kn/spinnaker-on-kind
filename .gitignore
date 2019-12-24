@@ -1,0 +1,5 @@
+/workdir
+/tmp
+/manifest.yaml
+/Dockerfile-halyard-patch
+*.jar
