@@ -2,7 +2,7 @@ halyard:
   spinnakerVersion: 1.16.1
   image:
     repository: 'registry:5000/halyard'
-    tag: 1.23.2-debug
+    tag: 1.23.2-patched
     pullSecrets: []
   # Set to false to disable persistence data volume for halyard
   persistence:
@@ -15,8 +15,12 @@ halyard:
     configMapKey: config.sh
     # If you'd rather do an inline script, set create to true and put the content in the data dict like you would a configmap
     # The content will be passed through `tpl`, so value interpolation is supported.
-    create: false
-    data: {}
+    create: true
+    data:
+      overwrite-spinnaker-version.sh: |-
+        echo '---> Overwriting Spinnaker version to make it use local docker registry'
+        $HAL_COMMAND config version edit --version local:1.16.1
+
   additionalSecrets:
     create: false
     data: {}
@@ -68,7 +72,6 @@ halyard:
   ## https://www.spinnaker.io/guides/operator/custom-boms/#boms-and-configuration-on-your-filesystem
   ## The key for each entry must be the name of the service and a file name separated by the '_' character.
   serviceConfigs: {}
-
 
   ## Uncomment if you want to add extra commands to the init script
   ## run by the init container before halyard is started.
