@@ -3,3 +3,4 @@
 /manifest.yaml
 /Dockerfile-halyard-patch
 *.jar
+*.tgz

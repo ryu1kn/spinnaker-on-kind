@@ -59,52 +59,6 @@ halyard:
     #     podAnnotations:
     #       iam.amazonaws.com/role: <role_arn>
 
-  ## Populate to provide a custom local BOM for Halyard to use for deployment. Read more for details:
-  ## https://www.spinnaker.io/guides/operator/custom-boms/#boms-and-configuration-on-your-filesystem
-  bom: |-
-    artifactSources:
-      dockerRegistry: 'registry:5000'
-      debianRepository: https://dl.bintray.com/spinnaker-releases/debians
-      gitPrefix: https://github.com/spinnaker
-      googleImageProject: marketplace-spinnaker-release
-    dependencies:
-      consul:
-        version: 0.7.5
-      redis:
-        version: 2:2.8.4-2
-      vault:
-        version: 0.7.0
-    services:
-      clouddriver:
-        version: local:6.3.0-20190904130744
-      deck:
-        version: local:2.12.0-20190916141821
-      orca:
-        version: local:2.10.0-20190914075316
-      gate:
-        version: local:1.12.0-20190914075316
-      igor:
-        version: local:1.6.0-20190914075316
-      echo:
-        version: local:2.8.0-20190914075316
-      fiat:
-        version: local:1.7.0-20190904130744
-      front50:
-        version: local:0.19.0-20190904130744
-      rosco:
-        version: local:0.14.0-20190904130744
-      orca:
-        version: local:2.7.0-20190514092618
-      # kayenta:
-      #   version: local:0.11.0-20190830172818
-      # monitoring-daemon:
-      #   version: local:0.15.0-20190820135930
-      # monitoring-third-party:
-      #   version: local:0.15.0-20190820135930
-      defaultArtifact: {}
-    timestamp: '2019-09-16 18:18:44'
-    version: 1.16.1
-
   ## Define local configuration for Spinnaker services.
   ## The contents of these files would be copies of the configuration normally retrieved from
   ## `gs://halconfig/<service-name>`, but instead need to be available locally on the halyard pod to facilitate
@@ -113,36 +67,23 @@ halyard:
   ## Read more for details:
   ## https://www.spinnaker.io/guides/operator/custom-boms/#boms-and-configuration-on-your-filesystem
   ## The key for each entry must be the name of the service and a file name separated by the '_' character.
-  serviceConfigs:
-  # clouddriver_clouddriver-ro.yml: |-
-  #   ...
-  # clouddriver_clouddriver-rw.yml: |-
-  #   ...
-    clouddriver_clouddriver.yml: |-
-      # halconfig
+  serviceConfigs: {}
 
-      admin.tasks.shutdownWaitSeconds: 600 # 10 minutes
-
-      server:
-        port: ${services.clouddriver.port:7002}
-        address: ${services.clouddriver.host:localhost}
-
-      redis:
-        connection: ${services.redis.baseUrl:redis://localhost:6379}
-
-      caching:
-        redis:
-          hashingEnabled: true
-  #   ...
-  # deck_settings.json: |-
-  #   ...
-  # echo_echo.yml: |-
-  #   ...
 
   ## Uncomment if you want to add extra commands to the init script
   ## run by the init container before halyard is started.
   ## The content will be passed through `tpl`, so value interpolation is supported.
-  # additionalInitScript: |-
+  additionalInitScript: |-
+    echo '---> Starting custom additional init script'
+
+    set -euo pipefail
+
+    base64 --decode > /tmp/spinnaker/bom.tgz <<< '{{ .Values.custom.base64_bom_dir }}'
+
+    echo '---> Replacing the bom file and all service configs'
+    rm -rf /tmp/spinnaker/.hal/.boms
+    mkdir /tmp/spinnaker/.hal/.boms
+    tar zxvf /tmp/spinnaker/bom.tgz -C /tmp/spinnaker/.hal/.boms
 
   ## Uncomment if you want to add annotations on halyard and install-using-hal pods
   # annotations:

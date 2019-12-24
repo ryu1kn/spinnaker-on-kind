@@ -2,12 +2,27 @@ manifest := manifest.yaml
 jar_patch_dir := workdir
 cache_image_file := images.txt
 spinnaker_helm_ver := 1.22.4
+spinnaker_ver_dir := __spinnaker-versions
+spinnaker_ver := 1.16.1
+spinnaker_settings_dir := __bom
 
 recreate_dir = rm -rf "$1" && mkdir "$1"
 
-$(manifest): helm-values.yaml
-	helm template my stable/spinnaker --version $(spinnaker_helm_ver) \
-		--set "custom.foo=bar" \
+spinnaker-$(spinnaker_helm_ver).tgz:
+	helm pull stable/spinnaker --version $(spinnaker_helm_ver)
+
+$(spinnaker_settings_dir): $(spinnaker_ver_dir)/$(spinnaker_ver)
+	cp -r $< $@
+	./localise-bom.sh $@/bom/$(spinnaker_ver).yml > tmp.yml
+	mv tmp.yml $@/bom/$(spinnaker_ver).yml
+	rm -f tmp.yml
+
+bom.tgz: $(spinnaker_settings_dir)
+	tar zcvf $@ -C $< .
+
+$(manifest): helm-values.yaml bom.tgz spinnaker-$(spinnaker_helm_ver).tgz
+	helm template my spinnaker-$(spinnaker_helm_ver).tgz \
+		--set "custom.base64_bom_dir=$$(base64 -i bom.tgz)" \
 		--values $< \
 		| sed 's|apps/v1beta2|apps/v1|g' \
 		> $@
