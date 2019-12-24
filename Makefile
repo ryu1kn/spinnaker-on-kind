@@ -10,7 +10,7 @@ jar_patch_dir = $(work_dir)/jar_patch_work
 
 recreate_dir = rm -rf "$1" && mkdir "$1"
 update_with = $1 < $2 > __tmp_file && mv -f __tmp_file $2 && rm -f __tmp_file
-untar = tar zxvf $1 -C $(dir $1) && rm -f $1
+untar = mkdir -p $(1:.tar.gz=) && tar zxvf $1 -C $(1:.tar.gz=) && rm -f $1
 
 $(shell mkdir -p $(work_dir))
 
@@ -72,9 +72,9 @@ patch-halyard: $(cache_image_file) $(work_dir)/Dockerfile-halyard-patch
 		&& docker build -t $$hal_image_reg -f $(word 2,$^) . \
 		&& docker push $$hal_image_reg
 
-.PHONY: expose-deck
-expose-deck:
-	kubectl expose deployment spin-deck --type=NodePort --name=spin-deck-2
+.PHONY: expose-spin
+expose-spin:
+	kubectl port-forward svc/spin-deck 8080:9000
 
 .PHONY: clean
 clean:
