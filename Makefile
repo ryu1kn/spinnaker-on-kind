@@ -40,9 +40,9 @@ start-cluster:
 	test -z "$(docker ps --filter name=kind-control-plane -q)" && $(script_dir)/kind-with-registry.sh
 	kind export kubeconfig
 
-.PHONY: %-manifest
-%-manifest: $(work_dir)/$(manifest)
-	kubectl $* -f $<
+.PHONY: apply-manifest delete-manifest
+apply-manifest delete-manifest: $(work_dir)/$(manifest)
+	echo kubectl $(@:-manifest=) -f $<
 
 .PHONY: cache-images
 cache-images: $(cache_image_file)
