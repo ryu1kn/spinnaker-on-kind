@@ -42,7 +42,7 @@ start-cluster:
 
 .PHONY: apply-manifest delete-manifest
 apply-manifest delete-manifest: $(work_dir)/$(manifest)
-	echo kubectl $(@:-manifest=) -f $<
+	kubectl $(@:-manifest=) -f $<
 
 .PHONY: cache-images
 cache-images: $(cache_image_file)
