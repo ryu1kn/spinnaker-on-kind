@@ -1,6 +1,6 @@
 manifest := manifest.yaml
 cache_image_file := images.txt
-spinnaker_helm_ver := 1.22.4
+spinnaker_helm_ver := 1.23.1
 spinnaker_ver_dir := __spinnaker-versions
 spinnaker_ver := 1.16.1
 spinnaker_settings_dir := __bom

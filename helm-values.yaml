@@ -9,6 +9,9 @@ halyard:
     enabled: false
   # Provide a config map with Hal commands that will be run the core config (storage)
   # The config map should contain a script in the config.sh key
+  # Provide additional parameters to halyard deploy apply command
+  additionalInstallParameters:
+  - --wait-for-completion
   additionalScripts:
     enabled: false
     configMapName: my-halyard-config
