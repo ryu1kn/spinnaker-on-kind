@@ -2,7 +2,7 @@ halyard:
   spinnakerVersion: 1.16.1
   image:
     repository: 'registry:5000/halyard'
-    tag: 1.23.2-patched
+    tag: 1.29.0
     pullSecrets: []
   # Set to false to disable persistence data volume for halyard
   persistence:
@@ -81,7 +81,7 @@ halyard:
 
     set -euo pipefail
 
-    base64 --decode > /tmp/spinnaker/bom.tgz <<< '{{ .Values.custom.base64_bom_dir }}'
+    base64 -d > /tmp/spinnaker/bom.tgz <<< '{{ .Values.custom.base64_bom_dir }}'
 
     echo '---> Replacing the bom file and all service configs'
     rm -rf /tmp/spinnaker/.hal/.boms
