@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  builder:
+    build:
+      context: .
+      args:
+        - HOME=/user_home
+    volumes:
+      - .:/work
+    working_dir: /work
+    environment:
+      - XDG_CACHE_HOME=/user_home/.cache
+      - XDG_CONFIG_HOME=/user_home/.config
+      - XDG_DATA_HOME=/user_home/.local/share

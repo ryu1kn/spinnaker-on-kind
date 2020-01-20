@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 manifest := manifest.yaml
 cache_image_file := images.txt
 spinnaker_helm_ver := 1.23.1
@@ -9,7 +11,7 @@ work_dir := ./build
 
 recreate_dir = rm -rf "$1" && mkdir "$1"
 update_with = $1 < $2 > __tmp_file && mv -f __tmp_file $2 && rm -f __tmp_file
-untar = mkdir -p $(1:.tar.gz=) && tar zxvf $1 -C $(1:.tar.gz=) && rm -f $1
+untar = mkdir -p $(1:.tar.gz=) && tar xvf $1 -C $(1:.tar.gz=) && rm -f $1
 
 $(shell mkdir -p $(work_dir))
 
@@ -29,7 +31,7 @@ $(work_dir)/bom.tgz: $(work_dir)/$(spinnaker_settings_dir)
 
 $(work_dir)/$(manifest): helm-values.yaml $(work_dir)/bom.tgz $(work_dir)/spinnaker-$(spinnaker_helm_ver).tgz
 	helm template my $(word 3,$^) \
-		--set "custom.base64_bom_dir=$$(base64 -i $(word 2,$^))" \
+		--set "custom.base64_bom_dir=$$(base64 $(word 2,$^))" \
 		--values $< \
 		| sed 's|apps/v1beta2|apps/v1|g' \
 		> $@

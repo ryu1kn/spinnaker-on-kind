@@ -3,13 +3,14 @@
 
 ## Prerequisites
 
-* `brew install kind helm yq`
+* `brew install kind`
 * Have docker installed
-* Have HELM stable repo added
 
-    ```sh
-    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-    ```
+## Create Spinnaker settings
+
+```sh
+docker-compose run builder make build/manifest.yaml
+```
 
 ## Bring up Spinnaker
 
