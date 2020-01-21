@@ -23,6 +23,7 @@ $(work_dir)/spinnaker-$(spinnaker_helm_ver).tgz:
 	helm pull stable/spinnaker --version $(spinnaker_helm_ver) --destination $(work_dir)
 
 $(work_dir)/$(spinnaker_settings_dir): $(spinnaker_ver_dir)/$(spinnaker_ver)
+	rm -rf $@
 	cp -r $< $@
 	$(call update_with,$(script_dir)/localise-bom.sh,$@/bom/$(spinnaker_ver).yml)
 	$(call untar,$@/rosco/packer.tar.gz)
