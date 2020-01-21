@@ -18,6 +18,14 @@ docker-compose run builder make build/manifest.yaml
 make start-cluster apply-manifest
 ```
 
+## Make Spinnaker Accessible
+
+```sh
+make expose-spin
+```
+
+Open a browser and go to http://localhost:8080
+
 ## References
 
 * [kind](https://kind.sigs.k8s.io/)
