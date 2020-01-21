@@ -34,6 +34,7 @@ $(work_dir)/$(manifest): helm-values.yaml $(work_dir)/bom.tgz $(work_dir)/spinna
 	helm template my $(word 3,$^) \
 		--set "custom.base64_bom_dir=$$(base64 $(word 2,$^))" \
 		--set "halyard.image.repository=registry:$(call read_config,registry_port)/halyard" \
+		--set "halyard.spinnakerVersion=$(spinnaker_ver)" \
 		--values $< \
 		| sed 's|apps/v1beta2|apps/v1|g' \
 		> $@
