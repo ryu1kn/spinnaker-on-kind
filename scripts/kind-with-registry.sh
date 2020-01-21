@@ -13,7 +13,7 @@ reg_name='kind-registry'
 running="$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2> /dev/null || true)"
 if [ "${running}" != 'true' ]; then
   docker run \
-    -d --restart=always -p "${registry_port}:5000" --name "${reg_name}" \
+    -d --restart=always -p "$registry_port:$registry_port" -e "REGISTRY_HTTP_ADDR=0.0.0.0:$registry_port" --name "${reg_name}" \
     registry:2
 fi
 
