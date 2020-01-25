@@ -3,13 +3,14 @@
 
 set -euo pipefail
 
-source "$(dirname "$0")/../config.sh"
+source "$(dirname "$BASH_SOURCE")/lib/config.sh"
 
 # desired cluster name; default is "kind"
 KIND_CLUSTER_NAME="${KIND_CLUSTER_NAME:-kind}"
 
 # create registry container unless it already exists
 reg_name='kind-registry'
+registry_port="$(get_config registry_port)"
 running="$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2> /dev/null || true)"
 if [ "${running}" != 'true' ]; then
   docker run \

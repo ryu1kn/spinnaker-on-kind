@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-source "$(dirname "$0")/../config.sh"
+source "$(dirname "$BASH_SOURCE")/lib/config.sh"
 
-readonly local_registry="localhost:$registry_port"
+readonly local_registry="localhost:$(get_config registry_port)"
 readonly image_list_file="$1"
 
 while read -r image; do
