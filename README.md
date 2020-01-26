@@ -26,8 +26,6 @@ docker rm -f kind-registry
 
 ## Cache Spinnaker images to the local registry
 
-Update images.txt file and:
-
 ```sh
 make cache-images
 ```

@@ -18,12 +18,11 @@ apply-manifest delete-manifest: $(work_dir)/$(manifest)
 	kubectl $(@:-manifest=) -f $<
 
 .PHONY: cache-images
-cache-images: $(cache_image_file)
+cache-images: $(work_dir)/$(spinnaker_ver)-images.txt
 	$(script_dir)/cache-images.sh $<
 
-$(work_dir)/images-$(spinnaker_ver).txt: $(spinnaker_ver_dir)/$(spinnaker_ver)
-	yq -r '.services | to_entries | map(select(.value.version != null) | "$(remote_docker_registry)/\(.key):\(.value.version)")[]' \
-		$</bom/$(spinnaker_ver).yml > $@
+$(work_dir)/%-images.txt: $(spinnaker_ver_dir)/%
+	$(script_dir)/list-spinnaker-images.sh $</bom/$*.yml > $@
 
 .PHONY: expose-spin
 expose-spin:

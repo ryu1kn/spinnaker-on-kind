@@ -5,7 +5,6 @@ spinnaker_ver := 1.16.1
 remote_docker_registry := gcr.io/spinnaker-marketplace
 
 manifest := manifest.yaml
-cache_image_file := images.txt
 spinnaker_ver_dir := __spinnaker-versions
 spinnaker_settings_dir := __bom
 script_dir := ./scripts
