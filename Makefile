@@ -22,9 +22,8 @@ cache-images: $(cache_image_file)
 	$(script_dir)/cache-images.sh $<
 
 $(work_dir)/images-$(spinnaker_ver).txt: $(spinnaker_ver_dir)/$(spinnaker_ver)
-	$(script_dir)/jq-y.sh '.services | to_entries | map(select(.value.version != null) | "$(remote_docker_registry)/\(.key):\(.value.version)")' \
-		$</bom/$(spinnaker_ver).yml \
-		| cut -c3- > $@
+	yq -r '.services | to_entries | map(select(.value.version != null) | "$(remote_docker_registry)/\(.key):\(.value.version)")[]' \
+		$</bom/$(spinnaker_ver).yml > $@
 
 .PHONY: expose-spin
 expose-spin:

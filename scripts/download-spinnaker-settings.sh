@@ -23,7 +23,7 @@ readonly bom_file="$version_dir/bom/$version.yml"
 mkdir -p "$(dirname "$bom_file")"
 download "gs://halconfig/bom/$version.yml" "$bom_file"
 
-readonly service_dir_paths=$(yq r -j "$bom_file" | jq -r '.services | to_entries | map("\(.key)/\(.value.version)")[]')
+readonly service_dir_paths=$(yq -r '.services | to_entries | map("\(.key)/\(.value.version)")[]' "$bom_file")
 
 for dir_path in $service_dir_paths ; do
     [[ $dir_path = */null ]] && continue
