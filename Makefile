@@ -8,6 +8,9 @@ untar = mkdir -p $(1:.tar.gz=) && tar xvf $1 -C $(1:.tar.gz=) && rm -f $1
 
 $(shell mkdir -p $(work_dir))
 
+.PHONY: all
+all: start-cluster cache-images apply-manifest wait-for-deployment-complete expose-spin
+
 .PHONY: start-cluster
 start-cluster:
 	test -z "$(docker ps --filter name=kind-control-plane -q)" && $(script_dir)/kind-with-registry.sh
@@ -16,6 +19,12 @@ start-cluster:
 .PHONY: apply-manifest delete-manifest
 apply-manifest delete-manifest: $(work_dir)/$(manifest)
 	kubectl $(@:-manifest=) -f $<
+
+.PHONY: wait-for-deployment-complete
+wait-for-deployment-complete:
+	until [[ "$$(kubectl get jobs $(helm_template_name)-install-using-hal -o jsonpath='{.status.succeeded}')" = 1 ]] ; do \
+		echo "Waiting for the install job to complete..."; sleep 10; \
+	done
 
 .PHONY: cache-images
 cache-images: $(work_dir)/$(spinnaker_ver)-images.txt
@@ -33,7 +42,7 @@ clean:
 	rm -rf $(work_dir)
 
 $(work_dir)/$(manifest): helm-values.yaml $(work_dir)/bom.tgz $(work_dir)/spinnaker-$(spinnaker_helm_ver).tgz
-	helm template my $(word 3,$^) \
+	helm template $(helm_template_name) $(word 3,$^) \
 		--set "custom.base64_bom_dir=$$(base64 $(word 2,$^))" \
 		--set "halyard.image.repository=registry:$(registry_port)/halyard" \
 		--set "halyard.spinnakerVersion=$(spinnaker_ver)" \

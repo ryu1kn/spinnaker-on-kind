@@ -5,6 +5,7 @@
 
 * Docker
 * [Kind][1]: `brew install kind`
+* kubectl: `brew install kubernetes-cli`
 
 Unless you run `make` with `docker-compose run builder`, make sure you also have:
 
@@ -12,51 +13,23 @@ Unless you run `make` with `docker-compose run builder`, make sure you also have
 * [jq][3]: `brew install jq`
 * [yq][4]: `brew install python-yq` (Note: `brew install yq` installs a different package)
 
-For details, check [Dockerfile](./Dockerfile).
+For details, check [`Dockerfile`](./Dockerfile).
 
-## Start Kind with local docker registry
+## Usage
 
 ```sh
-make start-cluster
+make all
 ```
+
+This would take a while. After it's finished, open a browser and go to http://localhost:8080
+
+**NOTE:** The `Dockerfile` still doesn't have all the necessary tools to run `make all`; so just run it on your host 😛
 
 If you want to recreate your k8s cluster, you can always
 
 ```sh
 kind delete cluster
 ```
-
-If you want to delete the local registry. To do so:
-
-```sh
-docker rm -f kind-registry
-```
-
-## Cache Spinnaker images to the local registry
-
-```sh
-make cache-images
-```
-
-## Create Spinnaker settings
-
-```sh
-make build/manifest.yaml
-```
-
-## Bring up Spinnaker
-
-```sh
-make apply-manifest
-```
-
-## Make Spinnaker Accessible
-
-```sh
-make expose-spin
-```
-
-Open a browser and go to http://localhost:8080
 
 ## References
 
