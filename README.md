@@ -25,10 +25,10 @@ This would take a while. After it's finished, open a browser and go to http://lo
 
 **NOTE:** The `Dockerfile` still doesn't have all the necessary tools to run `make all`; so just run it on your host 😛
 
-If you want to recreate your k8s cluster, you can always
+If you start all over again, you can do:
 
 ```sh
-kind delete cluster
+make teardown
 ```
 
 ## References
