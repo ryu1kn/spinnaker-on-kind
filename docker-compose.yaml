@@ -8,6 +8,8 @@ services:
         - HOME=/user_home
     volumes:
       - .:/work
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/bin/docker
     working_dir: /work
     environment:
       - XDG_CACHE_HOME=/user_home/.cache
