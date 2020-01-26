@@ -9,7 +9,7 @@ source "$(dirname "$BASH_SOURCE")/lib/config.sh"
 KIND_CLUSTER_NAME="${KIND_CLUSTER_NAME:-kind}"
 
 # create registry container unless it already exists
-reg_name='kind-registry'
+reg_name="$(get_config local_registry_name)"
 registry_port="$(get_config registry_port)"
 running="$(docker inspect -f '{{.State.Running}}' "${reg_name}" 2> /dev/null || true)"
 if [ "${running}" != 'true' ]; then
