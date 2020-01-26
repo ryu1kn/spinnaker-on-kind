@@ -2,6 +2,7 @@
 registry_port := 5000
 spinnaker_helm_ver := 1.23.1
 spinnaker_ver := 1.16.1
+remote_docker_registry := gcr.io/spinnaker-marketplace
 
 manifest := manifest.yaml
 cache_image_file := images.txt
