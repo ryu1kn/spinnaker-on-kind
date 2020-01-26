@@ -4,6 +4,7 @@ spinnaker_helm_ver := 1.23.1
 spinnaker_ver := 1.16.1
 helm_template_name := my
 remote_docker_registry := gcr.io/spinnaker-marketplace
+spinnaker_ui_port := 8080
 
 manifest := manifest.yaml
 spinnaker_ver_dir := __spinnaker-versions

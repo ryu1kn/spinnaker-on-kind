@@ -35,7 +35,7 @@ $(work_dir)/%-images.txt: $(spinnaker_ver_dir)/%
 
 .PHONY: expose-spin
 expose-spin:
-	kubectl port-forward svc/spin-deck 8080:9000
+	kubectl port-forward svc/spin-deck $(spinnaker_ui_port):9000
 
 .PHONY: clean
 clean:
