@@ -4,11 +4,11 @@
 ## Prerequisites
 
 * Docker
+
+Unless you run `make` through `docker-compose run builder`, make sure you also have:
+
 * [Kind][1]: `brew install kind`
 * kubectl: `brew install kubernetes-cli`
-
-Unless you run `make` with `docker-compose run builder`, make sure you also have:
-
 * [Helm][2]: `brew install helm`
 * [jq][3]: `brew install jq`
 * [yq][4]: `brew install python-yq` (Note: `brew install yq` installs a different package)
@@ -18,7 +18,7 @@ For details, check [`Dockerfile`](./Dockerfile).
 ## Usage
 
 ```sh
-make all
+docker-compose run builder make all
 ```
 
 This would take a while. After it's finished, open a browser and go to http://localhost:8080

@@ -27,9 +27,6 @@ containerdConfigPatches:
 - |-
   [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry:${registry_port}"]
     endpoint = ["http://registry:${registry_port}"]
----
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   extraMounts:
