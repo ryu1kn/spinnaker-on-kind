@@ -2,7 +2,7 @@ halyard:
   spinnakerVersion: WILL_BE_OVERWRITTEN
   image:
     repository: WILL_BE_OVERWRITTEN
-    tag: 1.29.0
+    tag: WILL_BE_OVERWRITTEN
     pullSecrets: []
   # Set to false to disable persistence data volume for halyard
   persistence:

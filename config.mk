@@ -2,6 +2,7 @@
 registry_port := 5000
 spinnaker_helm_ver := 1.23.1
 spinnaker_ver := 1.16.1
+spinnaker_halyard_ver := 1.29.0
 helm_template_name := my
 remote_docker_registry := gcr.io/spinnaker-marketplace
 local_registry_name := kind-registry

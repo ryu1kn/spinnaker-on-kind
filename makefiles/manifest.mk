@@ -8,6 +8,7 @@ $(work_dir)/$(manifest): helm-values.yaml $(work_dir)/bom.tgz $(work_dir)/spinna
 	helm template $(helm_template_name) $(word 3,$^) \
 		--set "custom.base64_bom_dir=$$(base64 $(word 2,$^))" \
 		--set "halyard.image.repository=registry:$(registry_port)/halyard" \
+		--set "halyard.image.tag=$(spinnaker_halyard_ver)" \
 		--set "halyard.spinnakerVersion=$(spinnaker_ver)" \
 		--values $< \
 		| sed 's|apps/v1beta2|apps/v1|g' \
