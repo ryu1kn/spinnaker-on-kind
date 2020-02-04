@@ -8,9 +8,6 @@ services:
         - HOME=/user_home
     volumes:
       - .:/work
-      - $HOME/.kube:/root/.kube
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/local/bin/docker:/usr/bin/docker
     working_dir: /work
     ports:
       - 5000:5000
