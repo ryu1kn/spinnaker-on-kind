@@ -7,7 +7,7 @@
 * [Kind][1]: `brew install kind`
 * kubectl: `brew install kubernetes-cli`
 
-Unless you run `make` with `with_docker=true`, make sure you also have:
+Unless you run `make` with `WITH_DOCKER=true`, make sure you also have:
 
 * [Helm][2]: `brew install helm`
 * [jq][3]: `brew install jq`
@@ -18,7 +18,7 @@ For details, check [`Dockerfile`](./Dockerfile).
 ## Usage
 
 ```sh
-export with_docker=true
+export WITH_DOCKER=true
 make all
 ```
 

@@ -4,7 +4,7 @@ include config.mk
 
 parent_dir = $(dir $(lastword $1))
 
-ifeq ($(with_docker), true)
+ifeq ($(WITH_DOCKER), true)
 generate_runner = $(eval $1: SHELL := docker-compose run builder bash -c)
 endif
 
