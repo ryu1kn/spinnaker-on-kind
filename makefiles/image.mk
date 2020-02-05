@@ -6,5 +6,5 @@ cache-images: $(work_dir)/$(spinnaker_ver)-images.txt
 
 $(call generate_runner, $(work_dir)/%-images.txt)
 $(work_dir)/%-images.txt: $(spinnaker_ver_dir)/%
-	echo "$(remote_docker_registry)/halyard:$(spinnaker_halyard_ver)" > $@
+	echo "$(spinnaker_docker_repository)/halyard:$(spinnaker_halyard_ver)" > $@
 	$(script_dir)/list-spinnaker-images.sh $</bom/$*.yml >> $@

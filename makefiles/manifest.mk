@@ -27,4 +27,4 @@ $(work_dir)/$(spinnaker_settings_dir): $(spinnaker_ver_dir)/$(spinnaker_ver)
 
 $(call generate_runner, $(work_dir)/spinnaker-$(spinnaker_helm_ver).tgz)
 $(work_dir)/spinnaker-$(spinnaker_helm_ver).tgz:
-	helm pull https://kubernetes-charts.storage.googleapis.com/spinnaker-$(spinnaker_helm_ver).tgz --destination $(work_dir)
+	helm pull $(helm_chart_repository)/spinnaker-$(spinnaker_helm_ver).tgz --destination $(work_dir)

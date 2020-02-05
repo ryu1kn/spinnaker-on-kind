@@ -8,4 +8,4 @@ yq -r ".services
     | to_entries
     | map(
         select(.value.version != null and .key != \"monitoring-third-party\")
-        | \"$(get_config remote_docker_registry)/\(.key):\(.value.version)\")[]" "$bom_file"
+        | \"$(get_config spinnaker_docker_repository)/\(.key):\(.value.version)\")[]" "$bom_file"
