@@ -20,6 +20,6 @@ ifneq ($(wildcard $(custom_config)),)
 include $(custom_config)
 endif
 
-# Use `make echo-var_name` to get the value of variable `var_name`
-echo-%:
+# Use `make print-var_name` to get the value of variable `var_name`
+print-%:
 	@echo '$($*)'

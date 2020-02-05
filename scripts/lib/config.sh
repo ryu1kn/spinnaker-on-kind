@@ -3,5 +3,5 @@
 dir="$(dirname "$BASH_SOURCE")"
 
 get_config() {
-    make -f "$dir/../../config.mk" -s "echo-$1"
+    make -f "$dir/../../config.mk" -s "print-$1"
 }
