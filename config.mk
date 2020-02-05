@@ -14,6 +14,11 @@ spinnaker_ver_dir := __spinnaker-versions
 spinnaker_settings_dir := __bom
 script_dir := ./scripts
 work_dir := ./build
+custom_config := config-override.mk
+
+ifneq ($(wildcard $(custom_config)),)
+include $(custom_config)
+endif
 
 # Use `make echo-var_name` to get the value of variable `var_name`
 echo-%:
