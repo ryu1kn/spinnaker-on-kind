@@ -32,6 +32,12 @@ If you start all over again, you can do:
 make teardown
 ```
 
+## Running behind a corporate proxy
+
+When running it behind a corporate proxy, be sure list the local docker registry
+in `NO_PROXY` environment variable and export the variable before creating a Kind cluster.
+See [this issue][5] for more detail.
+
 ## References
 
 * [kind](https://kind.sigs.k8s.io/)
@@ -40,3 +46,4 @@ make teardown
 [2]: https://github.com/helm/helm
 [3]: https://stedolan.github.io/jq/manual/
 [4]: https://kislyuk.github.io/yq/
+[5]: https://github.com/kubernetes-sigs/kind/issues/1304
