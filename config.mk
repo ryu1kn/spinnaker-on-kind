@@ -1,8 +1,8 @@
 
 registry_port := 5000
-spinnaker_helm_ver := 1.23.1
-spinnaker_ver := 1.16.1
-spinnaker_halyard_ver := 1.29.0
+spinnaker_helm_ver := 2.0.0-rc8
+spinnaker_ver := 1.20.5
+spinnaker_halyard_ver := 1.36.0
 spinnaker_docker_repository := gcr.io/spinnaker-marketplace
 helm_template_name := my
 helm_chart_repository := https://kubernetes-charts.storage.googleapis.com
