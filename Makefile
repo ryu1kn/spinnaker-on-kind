@@ -16,7 +16,7 @@ include makefiles/cluster.mk
 $(shell mkdir -p $(work_dir))
 
 .PHONY: all
-all: create-cluster cache-images apply-manifest wait-for-deployment-complete expose-ui-port
+all: create-cluster cache-images apply-manifest wait-for-deployment-complete expose-spin-ports
 
 .PHONY: teardown
 teardown: clean delete-cluster delete-local-registry

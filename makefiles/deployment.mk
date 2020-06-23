@@ -8,6 +8,7 @@ wait-for-deployment-complete:
 		echo "Waiting for the install job to complete..."; sleep 10; \
 	done
 
-.PHONY: expose-ui-port
-expose-ui-port:
-	kubectl port-forward svc/spin-deck $(spinnaker_ui_port):9000
+.PHONY: expose-spin-ports
+expose-spin-ports:
+	kubectl port-forward svc/spin-deck $(spinnaker_ui_port):9000 &
+	kubectl port-forward svc/spin-gate $(spinnaker_api_port):8084 &

@@ -11,7 +11,8 @@ spinnaker_docker_repository := gcr.io/spinnaker-marketplace
 helm_template_name := my
 helm_chart_repository := https://kubernetes-charts.storage.googleapis.com
 local_registry_name := kind-registry
-spinnaker_ui_port := 8080
+spinnaker_ui_port := 9000
+spinnaker_api_port := 8084
 
 manifest := manifest.yaml
 spinnaker_ver_dir := __spinnaker-versions
