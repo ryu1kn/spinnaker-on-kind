@@ -20,13 +20,12 @@ fi
 
 # create a cluster with the local registry enabled in containerd
 cat <<EOF | kind create cluster --config=-
----
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
 - |-
-  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry:${registry_port}"]
-    endpoint = ["http://registry:${registry_port}"]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:${registry_port}"]
+    endpoint = ["http://${reg_name}:${registry_port}"]
 nodes:
 - role: control-plane
   extraMounts:
@@ -34,9 +33,11 @@ nodes:
     containerPath: /mnt/data
 EOF
 
-# add the registry to /etc/hosts on each node
-ip_fmt='{{.NetworkSettings.IPAddress}}'
-cmd="echo $(docker inspect -f "${ip_fmt}" "${reg_name}") registry >> /etc/hosts"
-for node in $(kind get nodes --name "${KIND_CLUSTER_NAME}"); do
-  docker exec "${node}" sh -c "${cmd}"
+# connect the registry to the cluster network
+docker network connect "$KIND_CLUSTER_NAME" "${reg_name}"
+
+# tell https://tilt.dev to use the registry
+# https://docs.tilt.dev/choosing_clusters.html#discovering-the-registry
+for node in $(kind get nodes); do
+  kubectl annotate node "${node}" "kind.x-k8s.io/registry=localhost:${registry_port}";
 done
