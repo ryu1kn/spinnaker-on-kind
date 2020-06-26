@@ -29,7 +29,7 @@ export WITH_DOCKER=true
 make all
 ```
 
-This would take a while. After it's finished, open a browser and go to http://localhost:8080
+This would take a while. After it's finished, open a browser and go to http://localhost:9000
 
 **NOTE:** The `Dockerfile` still doesn't have all the necessary tools to run `make all`; so just run it on your host 😛
 
