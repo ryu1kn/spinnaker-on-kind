@@ -1,6 +1,13 @@
 
 # Spinnaker on Kind
 
+Trying Spinnaker is sometimes not trivial. It can require lots of machine power
+and many configurations.
+
+With this repo, you can run Spinnaker of your version choice on your machine.
+It uses [KIND (Kubernetes IN Docker)][1] cluster to host Spinnaker services;
+so cleaning down after use is just as easy as deleting the cluster.
+
 ## Prerequisites
 
 * Docker
