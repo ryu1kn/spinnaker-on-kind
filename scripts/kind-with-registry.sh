@@ -18,6 +18,11 @@ if [ "${running}" != 'true' ]; then
     registry:2
 fi
 
+if kind get clusters | grep "^$KIND_CLUSTER_NAME\$" ; then
+    echo "Cluster \"$KIND_CLUSTER_NAME\" already exists; skipping creation"
+    exit 0
+fi
+
 # create a cluster with the local registry enabled in containerd
 cat <<EOF | kind create cluster --config=-
 kind: Cluster
